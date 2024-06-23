@@ -10,9 +10,12 @@ const Pesquisa: React.FC = () => {
   const [resultado, setResultado] = useState<any[]>([]);
 
   const handlePesquisar = () => {
+    const produtoLower = produto.toLowerCase().trim();
+    const clienteLower = cliente.toLowerCase().trim();
+    
     const filtro = data.filter(item =>
-      (produto ? item.produto === produto : true) &&
-      (cliente ? item.cliente === cliente : true) &&
+      (produto ? item.produto === produtoLower : true) &&
+      (cliente ? item.cliente === clienteLower : true) &&
       item.mesAno === mesAno
     );
     setResultado(filtro);
@@ -24,8 +27,12 @@ const Pesquisa: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <TextInput placeholder="Mês e Ano" value={mesAno} onChangeText={setMesAno} style={styles.input} />
+      <Text style={styles.title}>Pesquisa de Produtos</Text>
+      <Text style={styles.label}>Mês e Ano</Text>
+      <TextInput placeholder="MMYYYY" value={mesAno} onChangeText={setMesAno} style={styles.input} keyboardType="numeric" />
+      <Text style={styles.label}>Produto</Text>
       <TextInput placeholder="Produto" value={produto} onChangeText={setProduto} style={styles.input} />
+      <Text style={styles.label}>Cliente</Text>
       <TextInput placeholder="Cliente" value={cliente} onChangeText={setCliente} style={styles.input} />
       <Button title="Pesquisar" onPress={handlePesquisar} />
       <FlatList
