@@ -24,4 +24,15 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 4,
   },
+  button: {
+    backgroundColor: '#7159c1',
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 4,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
 });

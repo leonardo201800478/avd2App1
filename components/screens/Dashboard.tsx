@@ -1,59 +1,83 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Alert, Text, ScrollView } from 'react-native';
+import { TextInput, Button, Alert, Text, ScrollView } from 'react-native';
 import { data } from '../data';
-import { styles } from './styles/DashboardStyles';
+import { styles } from '../styles/DashboardStyles';
 import { TextInputMask } from 'react-native-masked-text';
+import { createStackNavigator } from '@react-navigation/stack';
 
+const Stack = createStackNavigator();
+
+//Inicio da Função do Stack Navigator
+function DashboardStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="CadastrarScreen"
+        component={Dashboard}
+        options={{ headerShown: false }} // oculta o nome da tela no cabeçalho
+      />
+    </Stack.Navigator>
+  );
+}
+
+//Campos que deverão ser aceitos
 const validProducts = ['30-320', '20-280', '40-280', '50-310'];
-const validClients = ['VolksWagen', 'Nissan', 'Hyundai', 'Peugeot'];
+const validClients = ['Volkswagen', 'Nissan', 'Hyundai', 'Peugeot'];
 
+//Cadastro das variáveis
 const Dashboard: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [mesAno, setMesAno] = useState('');
   const [produto, setProduto] = useState('');
   const [quantidade, setQuantidade] = useState('');
-  const [valorUnitario, setValorUnitario] = useState('');
+  const [valorUni, setValorUni] = useState('');
   const [cliente, setCliente] = useState('');
 
+  //Aceitando tanto letras maiúsculas quanto minúsculas
   const handleCadastrar = () => {
     const produtoLower = produto.toLowerCase().trim();
     const clienteLower = cliente.toLowerCase().trim();
-
-    if (!mesAno || !produto || !quantidade || !valorUnitario || !cliente) {
+//Verificação de campos vazios
+    if (!mesAno || !produto || !quantidade || !valorUni || !cliente) {
       Alert.alert('Erro', 'Todos os campos são obrigatórios');
       return;
     }
-
+//Verificação de campos inválidos
     if (!validProducts.map(p => p.toLowerCase()).includes(produtoLower)) {
       Alert.alert('Erro', 'Produto inválido');
       return;
     }
-
+//Verificação de campos inválidos
     if (!validClients.map(c => c.toLowerCase()).includes(clienteLower)) {
       Alert.alert('Erro', 'Cliente inválido');
       return;
     }
 
+    // Tratar valor unitário antes de salvar no estado
+    const valorNum = parseFloat(valorUni.replace('R$', '').replace('.', '').replace(',', '.'));
+
     const novoRegistro = {
       mesAno: mesAno.trim(),
       produto: produtoLower,
       quantidade: parseInt(quantidade),
-      valorUnitario: parseFloat(valorUnitario.replace('R$', '').replace(',', '').trim()),
+      valorUni: valorNum, // Salvar o valor numérico corretamente
       cliente: clienteLower,
     };
 
+//Adicionando novo registro
     data.push(novoRegistro);
     Alert.alert('Sucesso', 'Cadastro realizado com sucesso');
     limparCampos();
   };
 
+  //Limpar campos após cadastro
   const limparCampos = () => {
     setMesAno('');
     setProduto('');
     setQuantidade('');
-    setValorUnitario('');
+    setValorUni('');
     setCliente('');
   };
-
+//Retorno dos campos
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Cadastro de Produtos</Text>
@@ -90,8 +114,8 @@ const Dashboard: React.FC<{ navigation: any }> = ({ navigation }) => {
           unit: 'R$ ',
           suffixUnit: '',
         }}
-        value={valorUnitario}
-        onChangeText={text => setValorUnitario(text)}
+        value={valorUni}
+        onChangeText={text => setValorUni(text)}
         style={styles.input}
       />
       <Text style={styles.label}>Cliente</Text>
@@ -102,11 +126,8 @@ const Dashboard: React.FC<{ navigation: any }> = ({ navigation }) => {
         style={styles.input}
       />
       <Button title="Cadastrar" onPress={handleCadastrar} />
-      <Button title="Listagem" onPress={() => navigation.navigate('Listagem')} />
-      <Button title="Pesquisa" onPress={() => navigation.navigate('Pesquisa')} />
-      <Button title="Totais" onPress={() => navigation.navigate('Totais')} />
     </ScrollView>
   );
 }
-
+//Exportação da função
 export default Dashboard;

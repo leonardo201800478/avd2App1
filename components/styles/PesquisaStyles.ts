@@ -24,12 +24,18 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 4,
   },
-  item: {
-    padding: 16,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1,
-    backgroundColor: '#fff',
+  button: {
+    backgroundColor: '#7159c1',
+    padding: 10,
+    marginVertical: 5,
     borderRadius: 4,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  item: {
     marginBottom: 10,
   },
 });

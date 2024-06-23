@@ -2,7 +2,7 @@ interface Registro {
   mesAno: string;
   produto: string;
   quantidade: number;
-  valorUnitario: number;
+  valorUni: number;
   cliente: string;
 }
 
